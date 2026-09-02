@@ -1,0 +1,737 @@
+/* =========================
+   GENERAL
+========================= */
+
+body {
+    background: #f5f6f8;
+}
+
+main {
+    width: 100%;
+}
+
+
+/* =========================
+   HEADER / NAVIGATION
+========================= */
+
+.site-header {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.site-header nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo a {
+    font-size: 24px;
+    font-weight: 700;
+    color: #6c4cff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: #555;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #6c4cff;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    background: #6c4cff;
+    color: white;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #5739dc;
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   SPLASH PAGE
+========================= */
+
+.splash-page {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #6c4cff,
+        #9b7cff
+    );
+}
+
+.splash-content {
+    width: 100%;
+    max-width: 430px;
+    padding: 20px;
+    text-align: center;
+}
+
+.splash-content > h1 {
+    color: white;
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.splash-content > p {
+    color: #eee;
+    margin-bottom: 30px;
+}
+
+.auth-card {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+    text-align: left;
+}
+
+.auth-card h2 {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auth-card label {
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.auth-card input {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.auth-card input:focus {
+    border-color: #6c4cff;
+}
+
+.auth-card form button {
+    margin-top: 16px;
+}
+
+.auth-card > p {
+    margin: 20px 0 10px;
+    text-align: center;
+    color: #666;
+}
+
+.auth-card > button {
+    display: block;
+    margin: 0 auto;
+}
+
+
+/* =========================
+   HOME PAGE
+========================= */
+
+.home-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 24px;
+
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 30px;
+}
+
+.home-content h1 {
+    margin-bottom: 20px;
+}
+
+.home-page aside {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    height: fit-content;
+
+    border: 1px solid #e5e7eb;
+}
+
+.home-page aside h2 {
+    margin-bottom: 10px;
+}
+
+.home-page aside p {
+    color: #666;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-form {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+
+    display: flex;
+    gap: 10px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.search-form label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.search-form input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.search-form input:focus {
+    border-color: #6c4cff;
+}
+
+
+/* =========================
+   CREATE POST
+========================= */
+
+.create-post {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.create-post h2 {
+    margin-bottom: 20px;
+}
+
+.create-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.create-post label {
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.create-post input,
+.create-post textarea {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.create-post textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.create-post input:focus,
+.create-post textarea:focus {
+    border-color: #6c4cff;
+}
+
+.create-post form p {
+    color: #777;
+    font-size: 14px;
+}
+
+.create-post form button {
+    margin-top: 10px;
+}
+
+
+/* =========================
+   FEED
+========================= */
+
+.feed h2 {
+    margin-bottom: 16px;
+}
+
+
+/* =========================
+   POST PREVIEW
+========================= */
+
+.post-preview {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+
+    border: 1px solid #e5e7eb;
+}
+
+.post-preview header {
+    padding: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-preview header h3 {
+    font-size: 16px;
+}
+
+.post-preview header span {
+    color: #888;
+    font-size: 13px;
+}
+
+.post-preview > img {
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+.post-preview section {
+    padding: 16px;
+}
+
+.post-preview section p:first-child {
+    margin-bottom: 10px;
+}
+
+.post-preview section p:last-child {
+    color: #6c4cff;
+    font-weight: 600;
+}
+
+.post-preview footer {
+    padding: 0 16px 16px;
+    display: flex;
+    gap: 10px;
+}
+
+.post-preview footer button:last-child {
+    background: #eee;
+    color: #333;
+}
+
+.post-preview footer button:last-child:hover {
+    background: #ddd;
+}
+
+
+/* =========================
+   PROFILE PAGE
+========================= */
+
+.profile-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px 24px;
+}
+
+.profile-info {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.profile-info img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info h1 {
+    margin-bottom: 8px;
+}
+
+.profile-info p {
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.profile-page > button {
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   EDIT PROFILE
+========================= */
+
+.edit-profile {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.edit-profile h2 {
+    margin-bottom: 20px;
+}
+
+.edit-profile form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edit-profile label {
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.edit-profile input,
+.edit-profile textarea {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.edit-profile textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.edit-profile input:focus,
+.edit-profile textarea:focus {
+    border-color: #6c4cff;
+}
+
+.edit-profile button {
+    margin-top: 12px;
+}
+
+
+/* =========================
+   USER POSTS
+========================= */
+
+.user-posts {
+    margin-bottom: 40px;
+}
+
+.user-posts h2 {
+    margin-bottom: 16px;
+}
+
+
+/* =========================
+   FRIENDS
+========================= */
+
+.friends {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.friends h2 {
+    margin-bottom: 20px;
+}
+
+.friends article {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-right: 25px;
+    margin-bottom: 15px;
+}
+
+.friends img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+/* =========================
+   POST PAGE
+========================= */
+
+.post-page {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 30px 24px;
+}
+
+.post {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.post > header {
+    padding: 20px;
+}
+
+.post > header h1 {
+    margin-bottom: 6px;
+}
+
+.post > header p {
+    color: #888;
+}
+
+.post-image {
+    margin: 0;
+}
+
+.post-image img {
+    display: block;
+    width: 100%;
+    max-height: 600px;
+    object-fit: cover;
+}
+
+.post > section {
+    padding: 20px;
+}
+
+.post > section p:first-child {
+    margin-bottom: 10px;
+}
+
+.post > section p:last-child {
+    color: #6c4cff;
+    font-weight: 600;
+}
+
+.post-page > button {
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   EDIT POST
+========================= */
+
+.edit-post {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.edit-post h2 {
+    margin-bottom: 20px;
+}
+
+.edit-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edit-post label {
+    font-weight: 600;
+}
+
+.edit-post textarea {
+    min-height: 120px;
+    padding: 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    resize: vertical;
+    outline: none;
+}
+
+.edit-post textarea:focus {
+    border-color: #6c4cff;
+}
+
+.edit-post button {
+    margin-top: 10px;
+}
+
+
+/* =========================
+   COMMENTS
+========================= */
+
+.comments {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.comments h2 {
+    margin-bottom: 20px;
+}
+
+.comments article {
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.comments article strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.comments article p {
+    color: #555;
+}
+
+.comments form {
+    margin-top: 20px;
+
+    display: flex;
+    gap: 10px;
+}
+
+.comments form label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.comments input {
+    flex: 1;
+    padding: 11px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+}
+
+.comments input:focus {
+    border-color: #6c4cff;
+}
+
+
+/* =========================
+   PROFILE PREVIEW
+========================= */
+
+.profile-preview {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.profile-preview img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-preview h3 {
+    margin-top: 10px;
+}
+
+.profile-preview p {
+    color: #666;
+    margin-top: 5px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .site-header nav {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .home-page {
+        grid-template-columns: 1fr;
+    }
+
+    .home-page aside {
+        display: none;
+    }
+
+    .profile-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .comments form {
+        flex-direction: column;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+}
