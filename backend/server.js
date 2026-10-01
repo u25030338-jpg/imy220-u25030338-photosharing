@@ -1,69 +1,38 @@
 const express = require("express");
 const cors = require("cors");
 
+const { connectToDatabase } = require("./db");
+
+const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/postRoutes");
+const albumRoutes = require("./routes/albumRoutes");
+const commentRoutes = require("./routes/commentRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 
 const PORT = 5000;
 
-// Middleware
+
+// =========================
+// MIDDLEWARE
+// =========================
+
 app.use(cors());
 app.use(express.json());
 
 
 // =========================
-// SIGN IN
+// API ROUTES
 // =========================
 
-app.post("/api/auth/signin", (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({
-            success: false,
-            message: "Email and password are required."
-        });
-    }
-
-    res.json({
-        success: true,
-        message: "Sign in successful.",
-        user: {
-            id: 1,
-            username: "Alex",
-            email: email
-        }
-    });
-});
-
-
-// =========================
-// SIGN UP
-// =========================
-
-app.post("/api/auth/signup", (req, res) => {
-    const {
-        username,
-        email,
-        password
-    } = req.body;
-
-    if (!username || !email || !password) {
-        return res.status(400).json({
-            success: false,
-            message: "Username, email and password are required."
-        });
-    }
-
-    res.status(201).json({
-        success: true,
-        message: "Account created successfully.",
-        user: {
-            id: 2,
-            username: username,
-            email: email
-        }
-    });
-});
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/albums", albumRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/auth", authRoutes);
 
 
 // =========================
@@ -72,6 +41,7 @@ app.post("/api/auth/signup", (req, res) => {
 
 app.get("/", (req, res) => {
     res.json({
+        success: true,
         message: "PhotoShare backend is running."
     });
 });
@@ -81,6 +51,12 @@ app.get("/", (req, res) => {
 // START SERVER
 // =========================
 
-app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Backend server running on port ${PORT}`);
-});
+connectToDatabase()
+    .then(() => {
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Backend server running on port ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error("Server could not start:", error);
+    });
