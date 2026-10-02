@@ -1,271 +1,212 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { api } from "../../api";
 
-function Splash() {
-    const navigate = useNavigate();
+export default function Splash({ onLogin }) {
+    const [mode, setMode] = useState("login");
 
-    const [showSignup, setShowSignup] = useState(false);
-    const [message, setMessage] = useState("");
-
-    const [loginData, setLoginData] = useState({
+    const [loginForm, setLoginForm] = useState({
         email: "",
         password: ""
     });
 
-    const [signupData, setSignupData] = useState({
+    const [signupForm, setSignupForm] = useState({
         username: "",
         email: "",
         password: "",
         confirmPassword: ""
     });
 
-    const handleLoginChange = (event) => {
-        setLoginData({
-            ...loginData,
-            [event.target.name]: event.target.value
-        });
-    };
+    const [message, setMessage] = useState("");
 
-    const handleSignupChange = (event) => {
-        setSignupData({
-            ...signupData,
-            [event.target.name]: event.target.value
-        });
-    };
+    async function handleLogin(e) {
+        e.preventDefault();
+        setMessage("");
 
-    const handleLoginSubmit = async (event) => {
-        event.preventDefault();
-
-        if (!loginData.email || !loginData.password) {
-            setMessage("Please fill in all login fields.");
+        if (!loginForm.email || !loginForm.password) {
+            setMessage("Please complete all fields.");
             return;
         }
 
         try {
-            const response = await fetch(
-                "http://localhost:5000/api/auth/signin",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(loginData)
-                }
-            );
-
-            const data = await response.json();
-
-            setMessage(data.message);
-
-            if (data.success) {
-                setTimeout(() => {
-                    navigate("/home");
-                }, 500);
-            }
+            const result = await api.signin(loginForm);
+            onLogin(result.user);
         } catch (error) {
-            setMessage(
-                "Unable to connect to the server."
-            );
+            setMessage(error.message);
         }
-    };
+    }
 
-    const handleSignupSubmit = async (event) => {
-        event.preventDefault();
+    async function handleSignup(e) {
+        e.preventDefault();
+        setMessage("");
 
         if (
-            !signupData.username ||
-            !signupData.email ||
-            !signupData.password ||
-            !signupData.confirmPassword
+            !signupForm.username ||
+            !signupForm.email ||
+            !signupForm.password
         ) {
-            setMessage("Please fill in all sign-up fields.");
+            setMessage("Please complete all fields.");
             return;
         }
 
-        if (
-            signupData.password !==
-            signupData.confirmPassword
-        ) {
+        if (signupForm.password !== signupForm.confirmPassword) {
             setMessage("Passwords do not match.");
             return;
         }
 
         try {
-            const response = await fetch(
-                "http://localhost:5000/api/auth/signup",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        username: signupData.username,
-                        email: signupData.email,
-                        password: signupData.password
-                    })
-                }
-            );
+            await api.signup({
+                username: signupForm.username,
+                email: signupForm.email,
+                password: signupForm.password
+            });
 
-            const data = await response.json();
-
-            setMessage(data.message);
-
-            if (data.success) {
-                setTimeout(() => {
-                    setShowSignup(false);
-                    setMessage("");
-                }, 1000);
-            }
+            setMessage("Account created. You can now sign in.");
+            setMode("login");
         } catch (error) {
-            setMessage(
-                "Unable to connect to the server."
-            );
+            setMessage(error.message);
         }
-    };
+    }
 
     return (
-        <main className="splash-page">
-            <section className="splash-content">
-                <h1>PhotoShare</h1>
+        <main className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+            <section className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+                <h1 className="text-4xl font-bold text-slate-900 mb-2">
+                    PhotoShare
+                </h1>
 
-                <p>
-                    Share your moments. Connect with friends.
+                <p className="text-slate-500 mb-6">
+                    Share moments. Connect with friends.
                 </p>
 
-                {!showSignup ? (
-                    <section className="auth-card">
-                        <h2>Login</h2>
+                <div className="flex mb-6 border-b">
+                    <button
+                        onClick={() => setMode("login")}
+                        className={`flex-1 py-3 font-semibold ${
+                            mode === "login"
+                                ? "border-b-2 border-blue-600 text-blue-600"
+                                : "text-slate-500"
+                        }`}
+                    >
+                        Sign In
+                    </button>
 
-                        <form onSubmit={handleLoginSubmit}>
-                            <label htmlFor="login-email">
-                                Email
-                            </label>
+                    <button
+                        onClick={() => setMode("signup")}
+                        className={`flex-1 py-3 font-semibold ${
+                            mode === "signup"
+                                ? "border-b-2 border-blue-600 text-blue-600"
+                                : "text-slate-500"
+                        }`}
+                    >
+                        Sign Up
+                    </button>
+                </div>
 
-                            <input
-                                id="login-email"
-                                type="email"
-                                name="email"
-                                value={loginData.email}
-                                onChange={handleLoginChange}
-                                required
-                            />
+                {message && (
+                    <div className="mb-4 rounded-lg bg-slate-100 p-3 text-sm">
+                        {message}
+                    </div>
+                )}
 
-                            <label htmlFor="login-password">
-                                Password
-                            </label>
+                {mode === "login" ? (
+                    <form onSubmit={handleLogin} className="space-y-4">
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={loginForm.email}
+                            onChange={(e) =>
+                                setLoginForm({
+                                    ...loginForm,
+                                    email: e.target.value
+                                })
+                            }
+                            className="w-full rounded-lg border p-3"
+                            required
+                        />
 
-                            <input
-                                id="login-password"
-                                type="password"
-                                name="password"
-                                value={loginData.password}
-                                onChange={handleLoginChange}
-                                required
-                            />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={loginForm.password}
+                            onChange={(e) =>
+                                setLoginForm({
+                                    ...loginForm,
+                                    password: e.target.value
+                                })
+                            }
+                            className="w-full rounded-lg border p-3"
+                            required
+                        />
 
-                            <button type="submit">
-                                Login
-                            </button>
-                        </form>
-
-                        {message && <p>{message}</p>}
-
-                        <p>
-                            Don't have an account?
-                        </p>
-
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setShowSignup(true);
-                                setMessage("");
-                            }}
-                        >
-                            Sign Up
+                        <button className="w-full rounded-lg bg-blue-600 p-3 font-semibold text-white hover:bg-blue-700">
+                            Sign In
                         </button>
-                    </section>
+                    </form>
                 ) : (
-                    <section className="auth-card">
-                        <h2>Sign Up</h2>
+                    <form onSubmit={handleSignup} className="space-y-4">
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={signupForm.username}
+                            onChange={(e) =>
+                                setSignupForm({
+                                    ...signupForm,
+                                    username: e.target.value
+                                })
+                            }
+                            className="w-full rounded-lg border p-3"
+                            required
+                        />
 
-                        <form onSubmit={handleSignupSubmit}>
-                            <label htmlFor="signup-username">
-                                Username
-                            </label>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={signupForm.email}
+                            onChange={(e) =>
+                                setSignupForm({
+                                    ...signupForm,
+                                    email: e.target.value
+                                })
+                            }
+                            className="w-full rounded-lg border p-3"
+                            required
+                        />
 
-                            <input
-                                id="signup-username"
-                                type="text"
-                                name="username"
-                                value={signupData.username}
-                                onChange={handleSignupChange}
-                                required
-                            />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            minLength="6"
+                            value={signupForm.password}
+                            onChange={(e) =>
+                                setSignupForm({
+                                    ...signupForm,
+                                    password: e.target.value
+                                })
+                            }
+                            className="w-full rounded-lg border p-3"
+                            required
+                        />
 
-                            <label htmlFor="signup-email">
-                                Email
-                            </label>
+                        <input
+                            type="password"
+                            placeholder="Confirm password"
+                            value={signupForm.confirmPassword}
+                            onChange={(e) =>
+                                setSignupForm({
+                                    ...signupForm,
+                                    confirmPassword: e.target.value
+                                })
+                            }
+                            className="w-full rounded-lg border p-3"
+                            required
+                        />
 
-                            <input
-                                id="signup-email"
-                                type="email"
-                                name="email"
-                                value={signupData.email}
-                                onChange={handleSignupChange}
-                                required
-                            />
-
-                            <label htmlFor="signup-password">
-                                Password
-                            </label>
-
-                            <input
-                                id="signup-password"
-                                type="password"
-                                name="password"
-                                value={signupData.password}
-                                onChange={handleSignupChange}
-                                required
-                            />
-
-                            <label htmlFor="signup-confirm-password">
-                                Confirm Password
-                            </label>
-
-                            <input
-                                id="signup-confirm-password"
-                                type="password"
-                                name="confirmPassword"
-                                value={signupData.confirmPassword}
-                                onChange={handleSignupChange}
-                                required
-                            />
-
-                            <button type="submit">
-                                Create Account
-                            </button>
-                        </form>
-
-                        {message && <p>{message}</p>}
-
-                        <p>
-                            Already have an account?
-                        </p>
-
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setShowSignup(false);
-                                setMessage("");
-                            }}
-                        >
-                            Back to Login
+                        <button className="w-full rounded-lg bg-blue-600 p-3 font-semibold text-white hover:bg-blue-700">
+                            Create Account
                         </button>
-                    </section>
+                    </form>
                 )}
             </section>
         </main>
     );
 }
-
-export default Splash;

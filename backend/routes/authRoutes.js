@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
 const { getDatabase } = require("../db");
 
 const router = express.Router();
@@ -61,14 +62,16 @@ router.post("/signup", async (req, res) => {
             ? lastUser[0].id + 1
             : 1;
 
-        const newUser = {
-            id: newId,
-            username,
-            email: email.toLowerCase(),
-            password,
-            friends: [],
-            createdAt: new Date()
-        };
+       const hashedPassword = await bcrypt.hash(password, 10);
+
+const newUser = {
+    id: newId,
+    username,
+    email: email.toLowerCase(),
+    password: hashedPassword,
+    friends: [],
+    createdAt: new Date()
+};
 
         await db.collection("users").insertOne(newUser);
 
@@ -126,12 +129,17 @@ router.post("/signin", async (req, res) => {
             });
         }
 
-        if (user.password !== password) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid email or password."
-            });
-        }
+       const passwordMatches = await bcrypt.compare(
+    password,
+    user.password
+);
+
+if (!passwordMatches) {
+    return res.status(401).json({
+        success: false,
+        message: "Invalid email or password."
+    });
+}
 
         // Never send password back
         res.json({
